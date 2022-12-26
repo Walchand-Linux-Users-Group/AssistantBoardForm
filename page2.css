@@ -219,6 +219,11 @@ body {
   cursor: pointer;
 }
 
+#filename {
+  color: white;
+  font-size: 0.8em;
+}
+
 .Input button {
   display: flex;
   align-items: center;

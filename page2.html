@@ -79,6 +79,7 @@
                         <p>Profile Picture</p>
                     </div>
                     <svg id="file-input" class="getImage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#ffffff" d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48z"/></svg>
+                    <p id="filename">No file selected</p>
                 </div>
                 <div class="Input">
                     <button>Next Page<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="#ffffff" d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/></svg></button>
@@ -90,25 +91,40 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script language="javascript" src="page2.js"></script>
 <script type="text/javascript">
+    var image = document.getElementById("file-input"); 
+    var fileNameLabel = document.getElementById("filename"); 
+    let file=document.createElement("input");
+        file.type="file";
+        file.accept=".jpg, .jpeg, .png";
+    image.addEventListener("click",()=>{
+        file.click();
+    })
+
+    file.addEventListener("change",()=>{
+        validateImageAndSize();
+    })
+
     function validateImageAndSize() {
-    // var formData = new FormData(); 
-    var file = document.getElementById("file-input").files[0]; 
-    // formData.append("Filedata", file);
-    
-    var t = file.type.split('/').pop().toLowerCase(); 
-    if (t != "jpeg" && t != "jpg" && t != "png") {
-        alert('Please select a valid image file');
-        document.getElementById("file-input").value = ''; 
-        return false; 
-    } 
-    
-    var fsize = (file.size / 1024 / 1024).toFixed(2); 
-    if (fsize > 0.512 ) {
-        alert('Max Upload size is 512 KB only'); 
-        document.getElementById("file-input").value = '';
-        return false; 
-    } 
-    return true;
-}
+        // var formData = new FormData(); 
+        // formData.append("Filedata", file);
+        
+        var t = file.files[0].type.split('/').pop().toLowerCase(); 
+        if (t != "jpeg" && t != "jpg" && t != "png"){
+            fileNameLabel.innerText="No file selected";
+            alert('Please select a valid image file');
+            document.getElementById("file-input").value = ''; 
+            return false; 
+        } 
+        
+        var fsize = (file.files[0].size / 1024 / 1024).toFixed(2); 
+        if (fsize > 0.512 ) {
+            fileNameLabel.innerText="No file selected";
+            alert('Max Upload size is 512 KB only'); 
+            document.getElementById("file-input").value = '';
+            return false; 
+        } 
+        fileNameLabel.innerText=file.files[0].name;
+        return true;
+    }
 </script>
 </html>
